@@ -1,0 +1,32 @@
+https://leetcode.com/problems/movie-rating/?envType=study-plan-v2&envId=top-sql-50
+Movie Rating
+-- CTE for Top User
+WITH TopUser AS (
+    SELECT 
+      Top 1  ur.name AS results
+    FROM MovieRating Mr
+    INNER JOIN Users ur
+        ON Mr.user_id = ur.user_id
+    GROUP BY ur.name
+    ORDER BY COUNT(*) DESC, ur.name ASC
+),
+-- CTE for Top Movie in February 2020
+TopMovie AS (
+    SELECT 
+      Top 1   Mv.title AS results
+    FROM MovieRating Mr
+    INNER JOIN Movies Mv
+        ON Mr.movie_id = Mv.movie_id
+    WHERE  YEAR(Mr.created_at) = 2020
+      AND MONTH(Mr.created_at) = 2
+    GROUP BY Mv.title
+    ORDER BY Round((Sum(Mr.rating)*1.0/Count(*)),2) DESC, Mv.title ASC
+)
+-- Combine results
+
+
+
+ 
+SELECT results FROM TopUser
+UNION ALL
+SELECT results FROM TopMovie
