@@ -25,8 +25,26 @@ TopMovie AS (
 -- Combine results
 
 
-
- 
 SELECT results FROM TopUser
 UNION ALL
 SELECT results FROM TopMovie
+
+https://leetcode.com/problems/exchange-seats/description/?envType=study-plan-v2&envId=top-sql-50
+Exchange Seats
+
+WITH cte AS (
+    SELECT 
+        id,
+        student,
+        ROW_NUMBER() OVER (ORDER BY id) AS rn
+    FROM Seat
+)
+SELECT 
+    CASE 
+        WHEN rn % 2 = 1 AND rn + 1 <= (SELECT COUNT(*) FROM Seat) THEN rn + 1
+        WHEN rn % 2 = 0 THEN rn - 1
+        ELSE rn
+    END AS id,
+    student
+FROM cte
+ORDER BY id;
