@@ -74,3 +74,23 @@ SELECT
 FROM cte1
 WHERE num > 6
 
+https://leetcode.com/problems/friend-requests-ii-who-has-the-most-friends/submissions/1492692476/?envType=study-plan-v2&envId=top-sql-50
+Who has the highest friends
+WITH CTE AS
+(
+SELECT requester_id as id,Count(accepter_id) as num
+FROM RequestAccepted
+GROUP BY requester_id
+
+UNION ALL
+
+SELECT accepter_id as id,count(requester_id) as num
+FROM RequestAccepted
+GROUP BY accepter_id
+
+)
+
+SELECT Top 1 id,Sum(num) num
+FROM CTE
+group by id
+ORDER BY num desc
