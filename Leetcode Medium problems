@@ -1,3 +1,4 @@
+
 https://leetcode.com/problems/movie-rating/?envType=study-plan-v2&envId=top-sql-50
 Movie Rating
 -- CTE for Top User
@@ -94,3 +95,18 @@ SELECT Top 1 id,Sum(num) num
 FROM CTE
 group by id
 ORDER BY num desc
+
+https://leetcode.com/problems/investments-in-2016/submissions/?envType=study-plan-v2&envId=top-sql-50
+Investments in 2016
+WITH
+  InsuranceWithCounts AS (
+    SELECT
+      tiv_2016,
+      COUNT(*) OVER(PARTITION by tiv_2015) AS tiv_2015_count,
+      COUNT(*) OVER(PARTITION by lat, lon) AS city_count
+    FROM Insurance
+  )
+SELECT ROUND(SUM(tiv_2016), 2) AS tiv_2016
+FROM InsuranceWithCounts
+WHERE tiv_2015_count > 1
+  AND city_count = 1;
