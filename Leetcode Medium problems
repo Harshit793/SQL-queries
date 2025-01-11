@@ -119,6 +119,10 @@ SELECT salary,Dense_rank() OVER(ORDER BY salary DESC) rnk
 FROM Employee
 )
 
+SELECT isnull(salary,null) SecondHighestSalary
+FROM CTE
+WHERE rnk=2
+
 https://leetcode.com/problems/department-top-three-salaries/description/?envType=study-plan-v2&envId=top-sql-50
 Department Top Three Salaries
 
@@ -141,8 +145,6 @@ WHERE salary IN
 );
 
 
-SELECT isnull(salary,null) SecondHighestSalary
-FROM CTE
-WHERE rnk=2
+
 
 
