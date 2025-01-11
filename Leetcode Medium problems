@@ -119,7 +119,30 @@ SELECT salary,Dense_rank() OVER(ORDER BY salary DESC) rnk
 FROM Employee
 )
 
+https://leetcode.com/problems/department-top-three-salaries/description/?envType=study-plan-v2&envId=top-sql-50
+Department Top Three Salaries
+
+SELECT dept.name AS Department, Emp.name AS Employee, Salary
+FROM Employee Emp
+INNER JOIN Department dept
+ON Emp.departmentId = dept.id
+WHERE salary IN 
+(
+  SELECT DISTINCT F.salary
+  FROM 
+  (
+      SELECT dep.name, salary,
+             DENSE_RANK() OVER (PARTITION BY dep.name ORDER BY salary DESC) AS Rnk
+      FROM Employee emp
+      INNER JOIN Department dep 
+      ON emp.departmentId = dep.id
+  ) F
+  WHERE F.Rnk <= 3
+);
+
+
 SELECT isnull(salary,null) SecondHighestSalary
 FROM CTE
 WHERE rnk=2
+
 
